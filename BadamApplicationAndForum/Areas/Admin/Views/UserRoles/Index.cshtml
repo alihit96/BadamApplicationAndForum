@@ -1,0 +1,51 @@
+﻿@model BadamApplicationAndForum.Data.ViewModels.ManageUserRolesViewModel
+
+    @{
+        ViewData["Title"] = "Index";
+        Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    }
+
+    <h3>مدیریت نقش ها برای @Model.UserName</h3>
+    <br />
+    <div class="card">
+        <div id="viewAll" class="card-body table-responsive">
+            <form asp-controller="userroles" method="post" asp-action="update" asp-area="Admin" asp-route-id="@Model.UserId" class="d-inline">
+                <input asp-for="@Model.UserId" type="hidden" />
+                <table class="table table-striped" id="userRolesTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                نقش
+                            </th>
+                            <th>
+                                وضعیت
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.UserRoles.Count(); i++)
+                        {
+                            <tr>
+                                <td>
+                                    <input asp-for="@Model.UserRoles[i].RoleName" type="hidden" />
+                                    @Model.UserRoles[i].RoleName
+                                </td>
+                                <td>
+                                    <div class="form-check m-1">
+                                        <input asp-for="@Model.UserRoles[i].Selected" class="form-check-input" />
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="col-sm-12" style=" padding: 20px 20px 0px 0px">
+                    <button type="submit" id="save" class="btn bg-primary text-white">
+                        <i class="fa fa-check"></i>
+                        ذخیره
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+

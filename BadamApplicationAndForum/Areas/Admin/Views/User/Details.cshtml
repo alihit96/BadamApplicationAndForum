@@ -1,0 +1,39 @@
+﻿@model BadamApplicationAndForum.Data.ViewModels.UserDetailViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div>
+    <dl class="dl-horizontal">
+        <dt hidden>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd hidden>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MobileNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MobileNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.Id }) |
+    <a asp-action="Index">بازگشت</a>
+</div>

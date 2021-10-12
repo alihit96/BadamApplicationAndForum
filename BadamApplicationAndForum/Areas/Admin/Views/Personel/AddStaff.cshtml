@@ -1,0 +1,98 @@
+﻿@model BadamApplicationAndForum.Data.ViewModels.StaffCreateViewModel
+
+@{
+    ViewData["Title"] = "AddStaff";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="AddStaff" enctype="multipart/form-data" method="post" onsubmit="return validateMyForm()">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="form-group col-lg-6 col-md-12">
+                    <label asp-for="FullName" class="control-label"></label>
+                    <input asp-for="FullName" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-6 col-md-12">
+                    <label asp-for="NormalName" class="control-label"></label>
+                    <input asp-for="NormalName" class="form-control" /><span class="text-muted">باید دقیقا مطابق نام کاربری پرسنل در پنل باشد</span>
+                    <span asp-validation-for="NormalName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-6 col-md-12">
+                    <label asp-for="ImageUrl" class="control-label"></label>
+                    <input asp-for="ImageUrl" type="file" id="addStaffImage" class="form-control" />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-6 col-md-12">
+                    <label asp-for="Department" class="control-label"></label>
+                    <select asp-for="Department" class="form-control">
+                        <option selected="selected" disabled>
+                            --انتخاب--
+                        </option>
+                        <option value="EDU">
+                            معاونت آموزشی و دانشجویی
+                        </option>
+                        <option value="RD">
+                            معاونت تحقیقات و فناوری
+                        </option>
+                        <option value="other">
+                            سایر
+                        </option>
+                    </select>
+                    <span asp-validation-for="Department" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-6 col-md-12">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-6 col-md-12">
+                    <label asp-for="Phone" class="control-label"></label>
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-6 col-md-12">
+                    <label asp-for="Duty" class="control-label"></label>
+                    <input asp-for="Duty" class="form-control" />
+                    <span asp-validation-for="Duty" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-6 col-md-12">
+                    <label asp-for="Duties" class="control-label"></label>
+                    <input asp-for="Duties" class="form-control" /><span class="text-muted">وظایف با استفاده از علامت ; از بقیه جدا شود</span>
+                    <span asp-validation-for="Duties" class="text-danger"></span>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="form-group">
+                    <input type="submit" value="ایجاد" class="btn btn-info btn-rounded" />
+                </div>
+                <a class="mr-2 btn text-danger" asp-action="Index">بازگشت</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    function validateMyForm() {
+        var input = document.getElementById('addStaffImage');
+        var file = input.files[0];
+        if (file.size > 2048000) {
+            alert("حجم فایل بیشتر از 2 مگابایت است");
+            return false;
+        }
+        else {
+            return true;
+        }
+
+    };
+</script>

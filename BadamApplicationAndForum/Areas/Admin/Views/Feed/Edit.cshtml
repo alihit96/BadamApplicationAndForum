@@ -1,0 +1,88 @@
+﻿@model BadamApplicationAndForum.Data.ViewModels.FeedEditViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data" onsubmit="return validateMyForm()">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group" hidden>
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                @if (Model.ImageUrl != null || Model.ImageUrlName != "")
+                {
+                    <img src="~/FeedImages/@Model.ImageUrlName" width="350" height="250" />
+                }
+                else
+                {
+                    <img src="~/AdminTemplate/assets/images/alert/alert2.png" width="100" height="100" />
+                }
+                <br />
+                <div class="form-group">
+                    <div class="col-sm-10">
+                        <input asp-for="ImageUrl" id="feedEditImage" type="file" accept=".png, .jpg, .jpeg" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Group" class="control-label"></label>
+                <select asp-for="Group" class="form-control">
+                    <option>
+                        آموزشی
+                    </option>
+                    <option>
+                        تحقیقات و فناوری
+                    </option>
+                </select>
+                <span asp-validation-for="Group" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FeedUrl" class="control-label"></label>
+                <input asp-for="FeedUrl" class="form-control" />
+                <span asp-validation-for="FeedUrl" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <input type="submit" value="ویرایش" class="btn btn-success btn-rounded" />
+                </div>
+                <a class="mr-2 btn text-danger" asp-action="Index">بازگشت</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function validateMyForm() {
+        var input = document.getElementById('feedEditImage');
+        var file = input.files[0];
+        if (file.size > 2048000) {
+            alert("حجم فایل بیشتر از 2 مگابایت است");
+            return false;
+        }
+        else {
+            return true;
+        }
+
+    };
+</script>

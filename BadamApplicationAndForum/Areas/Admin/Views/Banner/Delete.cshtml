@@ -1,0 +1,43 @@
+﻿@model BadamApplicationAndForum.Data.ViewModels.SliderDeleteViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h3>آیا از حذف بنر اطمینان دارید؟</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt hidden>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd hidden>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ImageUrl)
+        </dt>
+        <dd>
+            @if (Model.ImageUrl != null && Model.ImageUrl != "")
+            {
+                <a href="~/SliderImages/@Model.ImageUrl"><img class="img-fluid" src="~/SliderImages/@Model.ImageUrl" width="50" height="50" style="padding-top:16px;"></a>
+            }
+            else
+            {
+                <img src="~/Gentelella/build/images/noimage.png" width="100" height="100" />
+            }
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="submit" value="حذف" class="btn btn-danger" /> |
+        <a asp-action="Index">بازگشت</a>
+    </form>
+</div>

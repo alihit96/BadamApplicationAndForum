@@ -1,0 +1,47 @@
+﻿@model BadamApplicationAndForum.Data.ViewModels.UserRegisterViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-xs-12 col-md-6 col-lg-4">
+        <div>
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-danger">@TempData["Message"].ToString()</div>
+            }
+        </div>
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FullName" class="control-label"></label>
+                <input asp-for="FullName" class="form-control" autocomplete="off" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MobileNumber" class="control-label"></label>
+                <input asp-for="MobileNumber" class="form-control" autocomplete="off" />
+                <span asp-validation-for="MobileNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" autocomplete="off" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" type="password" autocomplete="off" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <input type="submit" value="ایجاد" class="btn btn-primary btn-rounded" />
+                </div>
+                <a class="mr-2 btn text-danger" asp-action="Index">بازگشت</a>
+            </div>
+        </form>
+    </div>
+</div>
+

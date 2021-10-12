@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model IEnumerable<IdentityRole>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<form method="post" asp-action="addrole" asp-controller="role" asp-area="Admin">
+    <div class="input-group">
+        <input name="roleName" class="form-control w-25">
+        <span class="input-group-btn">
+            <button class="btn btn-info">ایجاد نقش جدید</button>
+        </span>
+    </div>
+</form>
+<br />
+<div class="table-responsive">
+    <table class="table table-bordered" id="roleTable">
+        <thead>
+            <tr>
+                <th>
+                    نقش
+                </th>
+
+                <th>
+                    عملیات
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var role in Model)
+            {
+                <tr>
+                    <td>
+                        @role.Name
+                    </td>
+                    <td class="text-right">
+                        <!------------------------------------------------>
+                        @if (role.Name != "Admin")
+                        {
+
+                            <div class="btn-group">
+                                <a class="btn btn-success" asp-action="Index" asp-controller="Permission" asp-area="Admin" asp-route-roleId="@role.Id">
+                                    <i class="fa fa-wrench"></i> مدیریت مجوز ها
+                                </a>
+                            </div>
+                        }
+                        <div class="btn-group">
+                            <a class="btn btn-warning" asp-action="Edit" asp-controller="Role" asp-route-Id="@role.Id" asp-area="Admin">
+                                <i class="fa fa-edit"></i> ویرایش
+                            </a>
+                        </div>
+                        <div class="btn-group">
+                            <a class="btn btn-danger" asp-action="Delete" asp-controller="Role" asp-area="Admin" asp-route-Id="@role.Id">
+                                <i class="fa fa-close"></i> حذف
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+

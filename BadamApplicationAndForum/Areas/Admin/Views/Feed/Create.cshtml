@@ -1,0 +1,107 @@
+﻿@model BadamApplicationAndForum.Data.ViewModels.FeedCreateViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link href="~/css/persianDatepicker-default.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-xs-12 col-md-6 col-lg-4">
+        <div>
+            @if (TempData["FileIncompatible"] != null)
+            {
+                <div class="alert alert-danger">@TempData["FileIncompatible"].ToString()</div>
+            }
+        </div>
+        <form asp-action="Create" method="post" enctype="multipart/form-data" id="feedForm" onsubmit="return validateMyForm()">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" autocomplete="off" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" autocomplete="off" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" id="date" autocomplete="off" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Group" class="control-label"></label>
+                <select asp-for="Group" class="form-control">
+                    <option>
+                        آموزشی
+                    </option>
+                    <option>
+                        تحقیقات و فناوری
+                    </option>
+                </select>
+                <span asp-validation-for="Group" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReceivingGroup" class="control-label"></label>
+                <select asp-for="ReceivingGroup" class="form-control">
+                    <option value="professor">
+                        استاد
+                    </option>
+                    <option value="student">
+                        دانشجو
+                    </option>
+                    <option value="both">
+                        هر دو
+                    </option>
+                </select>
+                <span asp-validation-for="ReceivingGroup" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FeedUrl" class="control-label"></label>
+                <input asp-for="FeedUrl" class="form-control" />
+                <span asp-validation-for="FeedUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display:inline-block;">
+                <div class="col-sm-10 text-center">
+                    <input asp-for="ImageUrl" id="feedImage" type="file" accept=".png, .jpg, .jpeg" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <input type="submit" value="ایجاد" class="btn btn-success btn-rounded" />
+                </div>
+                <a class="mr-2 btn text-danger" asp-action="Index">بازگشت</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script src="~/js/persianDatepicker.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //usage
+            $("#date").persianDatepicker();
+        });
+    </script>
+
+<script>
+   function validateMyForm() {
+        var input = document.getElementById('feedImage');
+        var file = input.files[0];
+        if (file.size > 2048000) {
+            alert("حجم فایل بیشتر از 2 مگابایت است");
+            return false;
+        }
+        else {
+            return true;
+        }
+        
+    };
+</script>
+
+}

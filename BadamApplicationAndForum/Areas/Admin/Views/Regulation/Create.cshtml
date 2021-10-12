@@ -1,0 +1,32 @@
+﻿@model BadamApplicationAndForum.Data.ViewModels.RegulationCreateViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Link" class="control-label"></label>
+                <input asp-for="Link" class="form-control" />
+                <span asp-validation-for="Link" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <input type="submit" value="ایجاد" class="btn btn-success btn-rounded" />
+                </div>
+                <a class="mr-2 btn text-danger" asp-action="Index">بازگشت</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+

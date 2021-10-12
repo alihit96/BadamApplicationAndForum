@@ -1,0 +1,380 @@
+﻿@model BadamApplicationAndForum.Data.ViewModels.ProfessorDetailViewModel
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using BadamApplicationAndForum.Helpers
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Column -->
+        <div class="col-lg-4 col-xlg-3 col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <center class="m-t-30">
+                        @if (Model.ImageUrl != "")
+                        {
+                            <img src="~/ProfessorImages/@Model.ImageUrl" class="rounded-circle" height="150" width="150">
+                        }
+                        else
+                        {
+                            <img src="~/AdminTemplate/assets/images/profile.png" class="rounded-circle" height="150" width="150">
+                        }
+
+                        <h4 class="card-title m-t-10">@Model.Name</h4>
+                        <h6 class="card-subtitle">@Model.EducationLevel @Model.Field</h6>
+                        @*<div class="row text-center justify-content-md-center">
+                                <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-people"></i> <font class="font-medium">254</font></a></div>
+                                <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-picture"></i> <font class="font-medium">54</font></a></div>
+                            </div>*@
+                    </center>
+                </div>
+                <div>
+                    <hr>
+                </div>
+                <div class="card-body">
+                    <small class="text-muted">ایمیل </small>
+                    <h6>@Model.Email</h6>
+                    @*<small class="text-muted p-t-30 db">شبکه اجتماعی</small>
+                        <br>
+                        <button class="btn btn-circle btn-secondary"><i class="fab fa-facebook-f"></i></button>
+                        <button class="btn btn-circle btn-secondary"><i class="fab fa-twitter"></i></button>
+                        <button class="btn btn-circle btn-secondary"><i class="fab fa-youtube"></i></button>*@
+                </div>
+            </div>
+        </div>
+        <!-- Column -->
+        <!-- Column -->
+        <div class="col-lg-8 col-xlg-9 col-md-7">
+            <div class="card">
+                <!-- Tabs -->
+                <ul class="nav nav-pills custom-pills" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="pills-timeline-tab" data-toggle="pill" href="#current-month" role="tab" aria-controls="pills-timeline" aria-selected="true">درباره استاد</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#last-month" role="tab" aria-controls="pills-profile" aria-selected="false">پروفایل های پژوهشی</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-setting-tab" data-toggle="pill" href="#previous-month" role="tab" aria-controls="pills-setting" aria-selected="false">ویرایش</a>
+                    </li>
+                </ul>
+                <!-- Tabs -->
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="current-month" role="tabpanel" aria-labelledby="pills-timeline-tab">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 col-xs-6 b-r">
+                                    <strong>مسئولیت سازمانی</strong>
+                                    <br>
+                                    <p class="text-muted">@Model.OragnizationalObligation</p>
+                                </div>
+                                <div class="col-md-4 col-xs-6 b-r">
+                                    <strong>گروه</strong>
+                                    <br>
+                                    <p class="text-muted">@(Model.Group == "HCM" ? "مدیریت و سیاست گذاری سلامت" : Model.Group == "HIT" ? "فناوری اطلاعات سلامت" : Model.Group=="HE"? "اقتصاد سلامت":"کتابداری و اطلاع رسانی پزشکی")</p>
+                                </div>
+                                <div class="col-md-4 col-xs-6 b-r">
+                                    <strong>شماره تلفن</strong>
+                                    <br>
+                                    <p class="text-muted">@Model.Phone</p>
+                                </div>
+                            </div>
+                            <hr>
+                            @if (Model.About == null || Model.About == "")
+                            {
+                                <h4 class="font-medium m-t-30">درباره استاد</h4>
+                                <h5>بخش درباره استاد خالی است</h5>
+                            }
+                            else
+                            {
+                                <h4 class="font-medium m-t-30">درباره استاد</h4>
+                                <p class="m-t-30">@Model.About</p>
+
+                            }
+
+                            @if (Model.ProfessorInterests != null)
+                            {
+                                if (Model.ProfessorInterests != "" && Model.ProfessorInterests.Contains(';'))
+                                {
+                                    <br />
+                                    <br />
+                                    <h4 class="font-medium m-t-30">علاقه مندی های پژوهشی</h4>
+                                    <hr />
+                                    <table class="table table-hover table-borderless">
+                                        <tbody>
+                                            @foreach (var item in Model.ProfessorInterests.Split(';'))
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @item
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="last-month" role="tabpanel" aria-labelledby="pills-profile-tab">
+                        <div class="card-body">
+                            <table class="table table-borderless" style="table-layout:fixed;" width="100%;">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            Google Scholar
+                                        </td>
+                                        <td><a class="btn btn-outline-info btn-rounded" href="@Model.ScholarLink">برو</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Scopus
+                                        </td>
+                                        <td><a class="btn btn-outline-info btn-rounded" href="@Model.ScopusLink">برو</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Web of science
+                                        </td>
+                                        <td><a class="btn btn-outline-info btn-rounded" href="@Model.WosLink">برو</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Orcid
+                                        </td>
+                                        <td><a class="btn btn-outline-info btn-rounded" href="@Model.OrcidLink">برو</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Publons
+                                        </td>
+                                        <td><a class="btn btn-outline-info btn-rounded" href="@Model.PublonsLink">برو</a></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="previous-month" role="tabpanel" aria-labelledby="pills-setting-tab">
+                        <div class="card-body">
+                            @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Personels.Edit)).Result.Succeeded)
+                            {
+                            <form asp-action="Edit" asp-controller="Personel" asp-area="Admin" method="post" enctype="multipart/form-data" id="editForm" onsubmit="return validateMyForm()">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group" hidden>
+                                    <label asp-for="Id" class="control-label"></label>
+                                    <input asp-for="Id" class="form-control" />
+                                    <span asp-validation-for="Id" class="text-danger"></span>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-4 col-md-12">
+                                        <label asp-for="Name" class="control-label"></label>
+                                        <input asp-for="Name" class="form-control" autocomplete="off" />
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-lg-4 col-md-12">
+                                        <label asp-for="NormalName" class="control-label"></label>
+                                        <input asp-for="NormalName" class="form-control" autocomplete="off" />
+                                        <span class="text-muted">باید دقیقا مطابق نام کاربری استاد در پنل باشد</span>
+                                        <span asp-validation-for="NormalName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-lg-4 col-md-12">
+                                        <label asp-for="OragnizationalObligation" class="control-label"></label>
+                                        <input asp-for="OragnizationalObligation" class="form-control" autocomplete="off" />
+                                        <span asp-validation-for="OragnizationalObligation" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-4 col-md-12">
+                                        <label asp-for="ImageUrl" class="control-label"></label>
+                                        <input asp-for="ImageUrl" type="file" id="professorsEditImage" class="form-control" autocomplete="off" />
+                                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-lg-4 col-md-12">
+                                        <label asp-for="Email" class="control-label"></label>
+                                        <input asp-for="Email" class="form-control" autocomplete="off" />
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-lg-4 col-md-12">
+                                        <label asp-for="Phone" class="control-label"></label>
+                                        <input asp-for="Phone" class="form-control" autocomplete="off" />
+                                        <span asp-validation-for="Phone" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-4 col-md-12">
+                                        <label asp-for="Field" class="control-label"></label>
+                                        <input asp-for="Field" class="form-control" autocomplete="off" />
+                                        <span asp-validation-for="Field" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-lg-4 col-md-12">
+                                        <label asp-for="EducationLevel" class="control-label"></label>
+                                        <select asp-for="EducationLevel" class="form-control">
+                                            <option disabled>
+                                                --انتخاب--
+                                            </option>
+                                            <option value="استادیار">
+                                                استادیار
+                                            </option>
+                                            <option value="دانشیار">
+                                                دانشیار
+                                            </option>
+                                            <option value="استاد">
+                                                استاد
+                                            </option>
+                                            <option value="مربی">
+                                                مربی
+                                            </option>
+                                            <option value="سایر">
+                                                سایر
+                                            </option>
+                                        </select>
+                                        <span asp-validation-for="EducationLevel" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-lg-4 col-md-12">
+                                        <label asp-for="Group" class="control-label"></label>
+                                        <select asp-for="Group" class="form-control">
+                                            <option disabled>
+                                                --انتخاب--
+                                            </option>
+                                            <option value="HE">
+                                                اقتصاد سلامت
+                                            </option>
+                                            <option value="HIT">
+                                                فناوری اطلاعات سلامت
+                                            </option>
+                                            <option value="HCM">
+                                                مدیریت و سیاست گذاری سلامت
+                                            </option>
+                                            <option value="LMI">
+                                                کتابداری و اطلاع رسانی پزشکی
+                                            </option>
+                                        </select>
+                                        <span asp-validation-for="Group" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-6 col-md-12">
+                                        <label asp-for="ScopusLink" class="control-label"></label>
+                                        <input asp-for="ScopusLink" class="form-control" autocomplete="off" />
+                                        <span asp-validation-for="ScopusLink" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-lg-6 col-md-12">
+                                        <label asp-for="ScholarLink" class="control-label"></label>
+                                        <input asp-for="ScholarLink" class="form-control" autocomplete="off" />
+                                        <span asp-validation-for="ScholarLink" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-4 col-md-12">
+                                        <label asp-for="OrcidLink" class="control-label"></label>
+                                        <input asp-for="OrcidLink" class="form-control" autocomplete="off" />
+                                        <span asp-validation-for="OrcidLink" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-lg-4 col-md-12">
+                                        <label asp-for="PublonsLink" class="control-label"></label>
+                                        <input asp-for="PublonsLink" class="form-control" autocomplete="off" />
+                                        <span asp-validation-for="PublonsLink" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label asp-for="WosLink" class="control-label"></label>
+                                        <input asp-for="WosLink" class="form-control" autocomplete="off" />
+                                        <span asp-validation-for="WosLink" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        <label asp-for="ProfessorInterests" class="control-label"></label>
+                                        <input asp-for="ProfessorInterests" class="form-control" autocomplete="off" /><span class="text-muted">هر علاقه مندی با استفاده از علامت ; از بقیه جدا شود</span>
+                                        <span asp-validation-for="ProfessorInterests" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label asp-for="About" class="control-label"></label>
+                                        <textarea asp-for="About" rows="3" class="form-control" autocomplete="off"></textarea>
+                                        <span asp-validation-for="About" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button onclick="editProfessor()" class="btn btn-info btn-rounded">ذخیره</button>
+                                </div>
+                            </form>
+                            }
+                            else
+                            {
+                                <h4>شما به این قسمت دسترسی ندارید</h4>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Column -->
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+
+        function editProfessor() {
+            var postData = {
+                Id: vmodel.get('Id'),
+                Name: vmodel.get('Name'),
+                NormalName: vmodel.get('NormalName'),
+                Email: vmodel.get('Email'),
+                Field: vmodel.get('Field'),
+                EducationLevel: vmodel.get('EducationLevel'),
+                Group: vmodel.get('Group'),
+                ScopusLink: vmodel.get('ScopusLink'),
+                ScholarLink: vmodel.get('ScholarLink'),
+                OrcidLink: vmodel.get('OrcidLink'),
+                PublonsLink: vmodel.get('PublonsLink'),
+                WosLink: vmodel.get('WosLink'),
+                ProfessorInterests: vmodel.get('ProfessorInterests'),
+                Phone: vmodel.get('Phone'),
+                About: vmodel.get('About'),
+                OragnizationalObligation: vmodel.get('OragnizationalObligation'),
+            };
+            $("#editForm").submit(function (e) {
+                e.preventDefault();
+                var vmodel = new FormData($('#editForm')[0]);
+                var files = $('#professorsEditImage')[0].files;
+                if (files.length > 0) {
+
+                    vmodel.append('ImageUrl', files[0]);
+                    $.ajax({
+                        url: '/Admin/Personel/Edit/@Model.Id',
+                        type: "POST",
+                        data: postData,
+                        contentType: "application/json",
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+
+                            }
+                        }
+                    });
+
+                }
+            });
+        };
+    </script>
+
+    <script>
+        function validateMyForm() {
+            var input = document.getElementById('professorsEditImage');
+            var file = input.files[0];
+            if (file.size > 2048000) {
+                alert("حجم فایل بیشتر از 2 مگابایت است");
+                return false;
+            }
+            else {
+                return true;
+            }
+
+        };
+    </script>
+}

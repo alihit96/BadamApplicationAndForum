@@ -1,0 +1,31 @@
+﻿@model BadamApplicationAndForum.Data.ViewModels.RoleDeleteDto
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h3>آیا از حذف نقش مطمئن هستید؟</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt hidden>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd hidden>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RoleName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RoleName)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="submit" value="حذف" class="btn btn-danger" />
+        <a class="btn btn-default" asp-action="Index" asp-controller="Role" asp-area="Admin">بازگشت به لیست</a>
+    </form>
+</div>
+

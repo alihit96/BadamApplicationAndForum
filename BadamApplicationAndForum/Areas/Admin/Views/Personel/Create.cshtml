@@ -1,0 +1,149 @@
+﻿@model BadamApplicationAndForum.Data.ViewModels.ProfessorCreateViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create" method="post" enctype="multipart/form-data" onsubmit="return validateMyForm()">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="form-group col-lg-6 col-md-12">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" autocomplete="off" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-6 col-md-12">
+                    <label asp-for="NormalName" class="control-label"></label>
+                    <input asp-for="NormalName" class="form-control" autocomplete="off" />
+                    <span class="text-muted">باید دقیقا مطابق نام کاربری استاد در پنل باشد</span>
+                    <span asp-validation-for="NormalName" class="text-danger"></span>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-6 col-md-12">
+                    <label asp-for="ImageUrl" class="control-label"></label>
+                    <input type="file" asp-for="ImageUrl" id="addProfessorImage" class="form-control" />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-6 col-md-12">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" autocomplete="off" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-4 col-md-12">
+                    <label asp-for="Field" class="control-label"></label>
+                    <input asp-for="Field" class="form-control" autocomplete="off" />
+                    <span asp-validation-for="Field" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-4 col-md-12">
+                    <label asp-for="EducationLevel" class="control-label"></label>
+                    <select asp-for="EducationLevel" class="form-control">
+                        <option selected="selected" disabled>
+                            --انتخاب--
+                        </option>
+                        <option value="استادیار">
+                            استادیار
+                        </option>
+                        <option value="دانشیار">
+                            دانشیار
+                        </option>
+                        <option value="استاد">
+                            استاد
+                        </option>
+                        <option value="مربی">
+                            مربی
+                        </option>
+                        <option value="سایر">
+                            سایر
+                        </option>
+                    </select>
+                    <span asp-validation-for="EducationLevel" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-4 col-md-12">
+                    <label asp-for="Group" class="control-label"></label>
+                    <select asp-for="Group" class="form-control">
+                        <option selected="selected" disabled>
+                            --انتخاب--
+                        </option>
+                        <option value="HE">
+                            اقتصاد سلامت
+                        </option>
+                        <option value="HIT">
+                            فناوری اطلاعات سلامت
+                        </option>
+                        <option value="HCM">
+                            مدیریت و سیاست گذاری سلامت
+                        </option>
+                        <option value="LMI">
+                            کتابداری و اطلاع رسانی پزشکی
+                        </option>
+                    </select>
+                    <span asp-validation-for="Group" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-6 col-md-12">
+                    <label asp-for="ScopusLink" class="control-label"></label>
+                    <input asp-for="ScopusLink" class="form-control" autocomplete="off" />
+                    <span asp-validation-for="ScopusLink" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-6 col-md-12">
+                    <label asp-for="ScholarLink" class="control-label"></label>
+                    <input asp-for="ScholarLink" class="form-control" autocomplete="off" />
+                    <span asp-validation-for="ScholarLink" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-4 col-md-12">
+                    <label asp-for="OrcidLink" class="control-label"></label>
+                    <input asp-for="OrcidLink" class="form-control" autocomplete="off" />
+                    <span asp-validation-for="OrcidLink" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-4 col-md-12">
+                    <label asp-for="PublonsLink" class="control-label"></label>
+                    <input asp-for="PublonsLink" class="form-control" autocomplete="off" />
+                    <span asp-validation-for="PublonsLink" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label asp-for="WosLink" class="control-label"></label>
+                    <input asp-for="WosLink" class="form-control" autocomplete="off" />
+                    <span asp-validation-for="WosLink" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group col-lg-8">
+                <label asp-for="ProfessorInterests" class="control-label"></label>
+                <input asp-for="ProfessorInterests" class="form-control" autocomplete="off" /><span class="text-muted">هر علاقه مندی با استفاده از علامت ; از بقیه جدا شود</span>
+                <span asp-validation-for="ProfessorInterests" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <input type="submit" value="ایجاد" class="btn btn-info btn-rounded" />
+                </div>
+                <a class="mr-2 btn text-danger" asp-action="Index">بازگشت</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    function validateMyForm() {
+        var input = document.getElementById('addProfessorImage');
+        var file = input.files[0];
+        if (file.size > 2048000) {
+            alert("حجم فایل بیشتر از 2 مگابایت است");
+            return false;
+        }
+        else {
+            return true;
+        }
+
+    };
+</script>

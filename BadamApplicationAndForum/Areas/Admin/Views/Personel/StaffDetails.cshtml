@@ -1,0 +1,236 @@
+﻿@model BadamApplicationAndForum.Data.ViewModels.StaffDetailsViewModel
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using BadamApplicationAndForum.Helpers
+@{
+    ViewData["Title"] = "StaffDetails";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Column -->
+        <div class="col-lg-4 col-xlg-3 col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <center class="m-t-30">
+                        @if (Model.ImageUrl != "")
+                        {
+                            <img src="~/StaffImages/@Model.ImageUrl" class="rounded-circle" height="150" width="150">
+                        }
+                        else
+                        {
+                            <img src="~/AdminTemplate/assets/images/profile.png" class="rounded-circle" height="150" width="150">
+                        }
+
+                        <h4 class="card-title m-t-10">@Model.FullName</h4>
+                        <h6 class="card-subtitle">@Model.Duty</h6>
+
+                    </center>
+                </div>
+                <div>
+                    <hr>
+                </div>
+                <div class="card-body">
+                    <small class="text-muted">گروه </small>
+                    <h6>@(Model.Department == "RD" ? "معاونت تحقیقات و فناوری" : Model.Department == "EDU" ? "معاونت آموزشی و دانشجویی" : "سایر")</h6>
+                </div>
+                <div class="card-body">
+                    <small class="text-muted">ایمیل </small>
+                    <h6>@Model.Email</h6>
+                </div>
+                <div class="card-body">
+                    <small class="text-muted">تلفن </small>
+                    <h6>@Model.Phone </h6>
+                </div>
+            </div>
+        </div>
+        <!-- Column -->
+        <!-- Column -->
+        <div class="col-lg-8 col-xlg-9 col-md-7">
+            <div class="card">
+                <!-- Tabs -->
+                <ul class="nav nav-pills custom-pills" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="pills-timeline-tab" data-toggle="pill" href="#current-month" role="tab" aria-controls="pills-timeline" aria-selected="true">اطلاعات پایه</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-setting-tab" data-toggle="pill" href="#previous-month" role="tab" aria-controls="pills-setting" aria-selected="false">ویرایش</a>
+                    </li>
+                </ul>
+                <!-- Tabs -->
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="current-month" role="tabpanel" aria-labelledby="pills-timeline-tab">
+                        <div class="card-body">
+
+                            @if (Model.Duties != null)
+                            {
+                                if (Model.Duties != "" && Model.Duties.Contains(';'))
+                                {
+                                    <h4 class="font-medium m-t-30">شرح وظایف</h4>
+                                    <hr />
+                                    <table class="table table-hover table-borderless">
+                                        <tbody>
+                                            @foreach (var item in Model.Duties.Split(';'))
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @item
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                            }
+                            else
+                            {
+                                <h4 class="font-medium m-t-30">شرح وظایف</h4>
+                                <hr />
+                                <h5>وظیفه ای ثبت نشده است</h5>
+                            }
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="previous-month" role="tabpanel" aria-labelledby="pills-setting-tab">
+                        <div class="card-body">
+                            @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Personels.Edit)).Result.Succeeded)
+                            {
+                                <form asp-action="EditStaff" asp-controller="Personel" asp-area="Admin" method="post" id="staffEditForm" enctype="multipart/form-data" onsubmit="return validateMyForm()">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="form-group" hidden>
+                                        <label asp-for="Id" class="control-label"></label>
+                                        <input asp-for="Id" class="form-control" />
+                                        <span asp-validation-for="Id" class="text-danger"></span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-4 col-md-12">
+                                            <label asp-for="FullName" class="control-label"></label>
+                                            <input asp-for="FullName" class="form-control" autocomplete="off" />
+                                            <span asp-validation-for="FullName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-lg-4 col-md-12">
+                                            <label asp-for="NormalName" class="control-label"></label>
+                                            <input asp-for="NormalName" class="form-control" autocomplete="off" />
+                                            <span class="text-muted">باید دقیقا مطابق نام کاربری پرسنل در پنل باشد</span>
+                                            <span asp-validation-for="NormalName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-lg-4 col-md-12">
+                                            <label asp-for="Department" class="control-label"></label>
+                                            <select asp-for="Department" class="form-control">
+                                                <option disabled>
+                                                    --انتخاب--
+                                                </option>
+                                                <option value="EDU">
+                                                    معاونت آموزشی و دانشجویی
+                                                </option>
+                                                <option value="RD">
+                                                    معاونت تحقیقات و فناوری
+                                                </option>
+                                                <option value="other">
+                                                    سایر
+                                                </option>
+                                            </select>
+                                            <span asp-validation-for="Department" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-4 col-md-12">
+                                            <label asp-for="ImageUrl" class="control-label"></label>
+                                            <input asp-for="ImageUrl" id="staffDetailsImage" type="file" class="form-control" autocomplete="off" />
+                                            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-lg-4 col-md-12">
+                                            <label asp-for="Email" class="control-label"></label>
+                                            <input asp-for="Email" class="form-control" autocomplete="off" />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-lg-4 col-md-12">
+                                            <label asp-for="Phone" class="control-label"></label>
+                                            <input asp-for="Phone" class="form-control" autocomplete="off" />
+                                            <span asp-validation-for="Phone" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-6 col-md-12">
+                                            <label asp-for="Duty" class="control-label"></label>
+                                            <input asp-for="Duty" class="form-control" autocomplete="off" />
+                                            <span asp-validation-for="Duty" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-lg-6 col-md-12">
+                                            <label asp-for="Duties" class="control-label"></label>
+                                            <input asp-for="Duties" class="form-control" autocomplete="off" /><span class="text-muted">وظایف با استفاده از علامت ; از بقیه جدا شود</span>
+                                            <span asp-validation-for="Duties" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <button onclick="editStaff()" class="btn btn-info btn-rounded">ذخیره</button>
+                                    </div>
+                                </form>
+                            }
+                            else
+                            {
+                                <h4>شما به این قسمت دسترسی ندارید</h4>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Column -->
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+
+        function editProfessor() {
+            var postData = {
+                Id: vmodel.get('Id'),
+                FullName: vmodel.get('FullName'),
+                NormalName: vmodel.get('NormalName'),
+                Email: vmodel.get('Email'),
+                Duty: vmodel.get('Duty'),
+                Department: vmodel.get('Department'),
+                Duties: vmodel.get('Duties'),
+                Phone: vmodel.get('Phone'),
+
+            };
+            $("#staffEditForm").submit(function (e) {
+                e.preventDefault();
+                var vmodel = new FormData($('#staffEditForm')[0]);
+                var files = $('#staffDetailsImage')[0].files;
+                if (files.length > 0) {
+                    vmodel.append('ImageUrl', files[0]);
+                    $.ajax({
+                        url: '/Admin/Personel/EditStaff/@Model.Id',
+                        type: "POST",
+                        data: postData,
+                        contentType: "application/json",
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+
+                            }
+                        }
+                    });
+                }
+            });
+        };
+    </script>
+    <script>
+        function validateMyForm() {
+            var input = document.getElementById('staffDetailsImage');
+            var file = input.files[0];
+            if (file.size > 2048000) {
+                alert("حجم فایل بیشتر از 2 مگابایت است");
+                return false;
+            }
+            else {
+                return true;
+            }
+
+        };
+    </script>
+}

@@ -1,0 +1,132 @@
+﻿@model IEnumerable<BadamApplicationAndForum.Data.ViewModels.StaffListViewModel>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using BadamApplicationAndForum.Helpers
+@{
+    ViewData["Title"] = "StaffIndex";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<p>
+    @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Personels.Create)).Result.Succeeded)
+    {
+        <a class="btn btn-outline-info btn-rounded" asp-action="AddStaff" asp-controller="Personel" asp-area="Admin">ایجاد پرسنل</a>
+    }
+</p>
+
+<div class="card-body">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item"> <a class="nav-link active show" id="he-tab" data-toggle="tab" href="#he" role="tab" aria-controls="he" aria-expanded="true" aria-selected="true"><span class="hidden-sm-up"></span> <span class="hidden-xs-down">معاونت آموزشی دانشجویی</span></a> </li>
+        <li class="nav-item"> <a class="nav-link" id="hit-tab" data-toggle="tab" href="#hit" role="tab" aria-controls="hit" aria-selected="false"><span class="hidden-sm-up"></span> <span class="hidden-xs-down">معاونت تحقیقات و فناوری</span></a></li>
+        <li class="nav-item"> <a class="nav-link" id="hcm-tab" data-toggle="tab" href="#hcm" role="tab" aria-controls="hcm" aria-selected="false"><span class="hidden-sm-up"></span> <span class="hidden-xs-down">سایر</span></a></li>
+    </ul>
+    <div class="tab-content tabcontent-border p-20" id="myTabContent">
+        <div role="tabpanel" class="tab-pane fade active show" id="he" aria-labelledby="he-tab">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    if (item.Department.Equals("EDU"))
+                    {
+                        <div class="col-lg-3">
+                            <div class="card myBox">
+                                @if (item.ImageUrl != "")
+                                {
+                                    <img class="card-img-top img-responsive" src="~/StaffImages/@item.ImageUrl" height="300" alt="Card image cap">
+
+                                }
+                                else
+                                {
+                                    <img class="card-img-top img-responsive" src="~/AdminTemplate/assets/images/profile.png" height="300" alt="Card image cap">
+
+                                }
+                                <div class="card-body">
+                                    <div class="d-flex no-block align-items-center m-b-15">
+                                        @*<span><i class="ti-calendar"></i> 20 May 2018</span>*@
+                                        @*<div class="ml-auto">
+                                                <a href="javascript:void(0)" class="link"><i class="ti-comments"></i> 3 Comments</a>
+                                            </div>*@
+                                    </div>
+                                    <h3 class="font-normal">@item.FullName</h3>
+                                    <p class="m-b-0 m-t-10">@item.Duty</p>
+                                    <a asp-action="StaffDetails" asp-controller="Personel" asp-area="Admin" asp-route-Id="@item.Id" class="btn btn-success btn-rounded waves-effect waves-light m-t-20">جزئیات</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        <div class="tab-pane fade" id="hit" role="tabpanel" aria-labelledby="hit-tab">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    if (item.Department.Equals("RD"))
+                    {
+                        <div class="col-lg-3">
+                            <div class="card myBox">
+                                @if (item.ImageUrl != "")
+                                {
+                                    <img class="card-img-top img-responsive" src="@item.ImageUrl" height="300" alt="Card image cap">
+
+                                }
+                                else
+                                {
+                                    <img class="card-img-top img-responsive" src="~/AdminTemplate/assets/images/profile.png" height="300" alt="Card image cap">
+
+                                }
+                                <div class="card-body">
+                                    <div class="d-flex no-block align-items-center m-b-15">
+                                        @*<span><i class="ti-calendar"></i> 20 May 2018</span>*@
+                                        @*<div class="ml-auto">
+                                                <a href="javascript:void(0)" class="link"><i class="ti-comments"></i> 3 Comments</a>
+                                            </div>*@
+                                    </div>
+                                    <h3 class="font-normal">@item.FullName</h3>
+                                    <p class="m-b-0 m-t-10">@item.Duty</p>
+                                    <a asp-action="StaffDetails" asp-controller="Personel" asp-area="Admin" asp-route-Id="@item.Id" class="btn btn-success btn-rounded waves-effect waves-light m-t-20">جزئیات</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        <div class="tab-pane fade" id="hcm" role="tabpanel" aria-labelledby="hcm-tab">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    if (item.Department.Equals("other"))
+                    {
+                        <div class="col-lg-3">
+                            <div class="card myBox">
+                                @if (item.ImageUrl != "")
+                                {
+                                    <img class="card-img-top img-responsive" src="@item.ImageUrl" height="300" alt="Card image cap">
+
+                                }
+                                else
+                                {
+                                    <img class="card-img-top img-responsive" src="~/AdminTemplate/assets/images/profile.png" height="300" alt="Card image cap">
+
+                                }
+                                <div class="card-body">
+                                    <div class="d-flex no-block align-items-center m-b-15">
+                                        @*<span><i class="ti-calendar"></i> 20 May 2018</span>*@
+                                        @*<div class="ml-auto">
+                                                <a href="javascript:void(0)" class="link"><i class="ti-comments"></i> 3 Comments</a>
+                                            </div>*@
+                                    </div>
+                                    <h3 class="font-normal">@item.FullName</h3>
+                                    <p class="m-b-0 m-t-10">@item.Duty</p>
+                                    <a asp-action="StaffDetails" asp-controller="Personel" asp-area="Admin" asp-route-Id="@item.Id" class="btn btn-success btn-rounded waves-effect waves-light m-t-20">جزئیات</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+
+    </div>
+</div>
